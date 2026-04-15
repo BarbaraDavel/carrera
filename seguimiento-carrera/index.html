@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Seguimiento de Carrera</title>
+  <link rel="stylesheet" href="estilos.css" />
+</head>
+<body>
+  <div class="contenedor">
+
+    <header class="header">
+      <div class="header-top">
+        <div>
+          <h1>📚 Seguimiento de mi carrera</h1>
+          <p>Materias, notas, observaciones, correlativas y estado general</p>
+        </div>
+
+        <button id="toggleTema" class="btn-tema" type="button">🌙 Modo oscuro</button>
+      </div>
+    </header>
+
+    <section class="panel resumen">
+      <div class="card-resumen">
+        <span>Total</span>
+        <strong id="totalMaterias">0</strong>
+      </div>
+      <div class="card-resumen">
+        <span>Aprobadas</span>
+        <strong id="totalAprobadas">0</strong>
+      </div>
+      <div class="card-resumen">
+        <span>Pendientes</span>
+        <strong id="totalPendientes">0</strong>
+      </div>
+      <div class="card-resumen">
+        <span>Debe final</span>
+        <strong id="totalDebeFinal">0</strong>
+      </div>
+    </section>
+
+    <section class="panel controles">
+      <div class="control">
+        <label for="filtroAnio">Filtrar por año</label>
+        <select id="filtroAnio">
+          <option value="todos">Todos</option>
+        </select>
+      </div>
+
+      <div class="control">
+        <label for="filtroEstado">Filtrar por estado</label>
+        <select id="filtroEstado">
+          <option value="todos">Todos</option>
+          <option value="Pendiente">Pendiente</option>
+          <option value="Debe final">Debe final</option>
+          <option value="Final desaprobado">Final desaprobado</option>
+          <option value="Aprobada">Aprobada</option>
+        </select>
+      </div>
+
+      <div class="acciones-superiores">
+        <button id="abrirVistaGeneral" class="btn-principal" type="button">
+          Ver vista general
+        </button>
+      </div>
+
+      <div class="control check-control">
+        <label>
+          <input type="checkbox" id="soloPendientes" />
+          Ver solo materias pendientes
+        </label>
+      </div>
+
+      <div class="acciones-rapidas">
+        <button id="verTodas" class="btn-filtro activo" type="button">Todas</button>
+        <button id="verFinalesPendientes" class="btn-filtro" type="button">Finales pendientes</button>
+        <button id="verNoRendidas" class="btn-filtro" type="button">No rendidas</button>
+        <button id="verAprobadas" class="btn-filtro" type="button">Aprobadas</button>
+        <button id="verHabilitadas" class="btn-filtro" type="button">Habilitadas</button>
+        <button id="verBloqueadas" class="btn-filtro" type="button">Bloqueadas</button>
+      </div>
+    </section>
+
+    <section class="panel lista-panel">
+      <div class="panel-titulo">
+        <h2>Materias</h2>
+      </div>
+      <div id="listaMaterias" class="lista-materias"></div>
+    </section>
+
+    <section id="detalleMateria" class="panel detalle oculto">
+      <div class="detalle-header">
+        <div>
+          <h2 id="detalleNombre">Materia</h2>
+          <p id="detalleAnio">Año</p>
+        </div>
+        <button id="cerrarDetalle" class="btn-secundario" type="button">Cerrar</button>
+      </div>
+
+      <div class="detalle-grid">
+        <div class="bloque">
+          <label for="detalleParcial1">Parcial 1</label>
+          <input type="number" id="detalleParcial1" min="1" max="10" step="0.01" />
+        </div>
+
+        <div class="bloque">
+          <label for="detalleParcial2">Parcial 2</label>
+          <input type="number" id="detalleParcial2" min="1" max="10" step="0.01" />
+        </div>
+
+        <div class="bloque">
+          <label for="detalleRecuperatorio">Recuperatorio</label>
+          <input type="number" id="detalleRecuperatorio" min="1" max="10" step="0.01" />
+        </div>
+
+        <div class="bloque">
+          <label for="detalleFinal">Final</label>
+          <input type="number" id="detalleFinal" min="1" max="10" step="0.01" />
+        </div>
+
+        <div class="bloque">
+          <label for="detalleEstadoManual">Estado actual</label>
+          <input type="text" id="detalleEstadoManual" disabled />
+        </div>
+
+        <div class="bloque">
+          <label for="detalleHabilitacion">Correlativas</label>
+          <input type="text" id="detalleHabilitacion" disabled />
+        </div>
+      </div>
+
+      <section class="panel-correlativas">
+        <div class="panel-titulo">
+          <h3>Correlativas de esta materia</h3>
+        </div>
+        <div id="detalleCorrelativas" class="lista-correlativas"></div>
+      </section>
+
+      <div class="bloque bloque-textarea">
+        <label for="detalleObservaciones">Observaciones</label>
+        <textarea
+          id="detalleObservaciones"
+          rows="5"
+          placeholder="Ej: me falta rendir, anotarme a próxima mesa, revisar correlativas, etc."
+        ></textarea>
+      </div>
+
+      <section class="panel-tps">
+        <div class="panel-titulo">
+          <h3>Trabajos prácticos</h3>
+        </div>
+
+        <div class="tp-form-grid">
+          <div class="bloque">
+            <label for="tpTitulo">Título del TP</label>
+            <input type="text" id="tpTitulo" placeholder="Ej: The British Monarchy" />
+          </div>
+
+          <div class="bloque">
+            <label for="tpSemana">Semana / fecha</label>
+            <input type="text" id="tpSemana" placeholder="Ej: Semana 11 o 12/04/2026" />
+          </div>
+
+          <div class="bloque">
+            <label for="tpNota">Nota</label>
+            <input type="number" id="tpNota" min="1" max="10" step="0.01" />
+          </div>
+
+          <div class="bloque check-control">
+            <label>
+              <input type="checkbox" id="tpEntregado" />
+              Entregado
+            </label>
+          </div>
+        </div>
+
+        <div class="bloque bloque-textarea">
+          <label for="tpObservaciones">Observaciones del TP</label>
+          <textarea
+            id="tpObservaciones"
+            rows="3"
+            placeholder="Alguna nota sobre este trabajo práctico"
+          ></textarea>
+        </div>
+
+        <div class="acciones-detalle">
+          <button id="agregarTp" class="btn-secundario" type="button">Agregar TP</button>
+        </div>
+
+        <div id="listaTps" class="lista-tps"></div>
+      </section>
+
+      <div class="acciones-detalle">
+        <button id="guardarCambios" class="btn-principal" type="button">Guardar cambios</button>
+      </div>
+    </section>
+  </div>
+
+  <div id="modalVistaGeneral" class="modal oculto">
+    <div class="modal-contenido modal-grande">
+      <div class="modal-header">
+        <div>
+          <h2>Vista general de materias</h2>
+          <p>Resumen completo de toda la carrera</p>
+        </div>
+        <button id="cerrarVistaGeneral" class="btn-secundario" type="button">Cerrar</button>
+      </div>
+
+      <div class="tabla-wrapper">
+        <table class="tabla-general">
+          <thead>
+            <tr>
+              <th>Año</th>
+              <th>Materia</th>
+              <th>Parcial 1</th>
+              <th>Parcial 2</th>
+              <th>Recup.</th>
+              <th>Final</th>
+              <th>Correlativas</th>
+              <th>Habilitada</th>
+              <th>Estado</th>
+            </tr>
+          </thead>
+          <tbody id="tablaGeneralBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js" defer></script>
+</body>
+</html>
