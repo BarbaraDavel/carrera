@@ -184,7 +184,7 @@ function obtenerNombresCorrelativas(materia) {
     nombres.push(materia.requisitoEspecial);
   }
 
-  return nombres.length > 0 ? nombres.join(", ") : "Ninguna";
+  return nombres.length > 0 ? nombres.join(", ") : "No tiene";
 }
 
 function llenarFiltroAnios() {
